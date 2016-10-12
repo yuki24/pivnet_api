@@ -20,10 +20,10 @@ class PivnetAPI::Client
     @observers << observer
   end
   
-  def get_authentication(query_params: {}, headers: {}, **options)
+  def authentication(query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/authentication", query_params), nil, headers, options)
   end
-  alias find_authentication get_authentication
+  
   
   def get_products(query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/products", query_params), nil, headers, options)
@@ -35,10 +35,10 @@ class PivnetAPI::Client
   end
   alias find_product get_product
   
-  def patch_release_sort_order(slug, body, query_params: {}, headers: {}, **options)
+  def sort_release_for_product(slug, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/release_sort_order", query_params), body, headers, options)
   end
-  alias update_release_sort_order patch_release_sort_order
+  
   
   def get_eulas(query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/eulas", query_params), nil, headers, options)
@@ -50,10 +50,10 @@ class PivnetAPI::Client
   end
   alias find_eula get_eula
   
-  def post_eula_acceptance(slug, release_id, body, query_params: {}, headers: {}, **options)
+  def accept_eula(slug, release_id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Post, uri("/api/v2/products/#{slug}/releases/#{release_id}/eula_acceptance", query_params), body, headers, options)
   end
-  alias create_eula_acceptance post_eula_acceptance
+  
   
   def get_user_groups(query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/user_groups", query_params), nil, headers, options)
@@ -80,15 +80,15 @@ class PivnetAPI::Client
   end
   alias destroy_user_group delete_user_group
   
-  def patch_add_member(id, body, query_params: {}, headers: {}, **options)
+  def add_member_to_group(id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/user_groups/#{id}/add_member", query_params), body, headers, options)
   end
-  alias update_add_member patch_add_member
   
-  def patch_remove_member(id, body, query_params: {}, headers: {}, **options)
+  
+  def remove_member_from_group(id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/user_groups/#{id}/remove_member", query_params), body, headers, options)
   end
-  alias update_remove_member patch_remove_member
+  
   
   def get_product_files(slug, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/product_files", query_params), nil, headers, options)
@@ -115,10 +115,10 @@ class PivnetAPI::Client
   end
   alias destroy_product_file delete_product_file
   
-  def patch_file_transfers(slug, id, body, query_params: {}, headers: {}, **options)
+  def retry_file_transfer(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/product_files/retry_all", query_params), body, headers, options)
   end
-  alias update_file_transfers patch_file_transfers
+  
   
   def post_download(slug, release_id, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Post, uri("/api/v2/products/#{slug}/releases/#{release_id}/product_files/#{id}/download", query_params), body, headers, options)
@@ -155,20 +155,20 @@ class PivnetAPI::Client
   end
   alias destroy_file_group delete_file_group
   
-  def patch_add_product_file(slug, id, body, query_params: {}, headers: {}, **options)
+  def add_file_to_group(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/file_groups/#{id}/add_product_file", query_params), body, headers, options)
   end
-  alias update_add_product_file patch_add_product_file
   
-  def delete_remove_product_file(slug, id, query_params: {}, headers: {}, **options)
+  
+  def remove_file_from_group(slug, id, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Delete, uri("/api/v2/products/#{slug}/file_groups/#{id}/remove_product_file", query_params), nil, headers, options)
   end
-  alias destroy_remove_product_file delete_remove_product_file
   
-  def patch_file_sort_order(slug, id, body, query_params: {}, headers: {}, **options)
+  
+  def sort_file_in_group(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/file_groups/#{id}/product_file_sort_order", query_params), body, headers, options)
   end
-  alias update_file_sort_order patch_file_sort_order
+  
   
   def get_releases(slug, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases", query_params), nil, headers, options)
