@@ -1,5 +1,6 @@
 # -*- frozen-string-literal: true -*-
 require 'net/http'
+require "#{__dir__}/pivnet_api/client/exceptions"
 
 class PivnetAPI::Client
   attr_reader :domain, :proxy_addr, :proxy_port, :proxy_user, :proxy_password
@@ -9,7 +10,7 @@ class PivnetAPI::Client
       domain, proxy_addr, proxy_port, proxy_user, proxy_password
 
     @interceptors = [JsonCallback.new]
-    @observers    = [JsonCallback.new]
+    @observers    = [ResponseHandler.new, JsonCallback.new]
   end
 
   def register_interceptor(interceptor)
@@ -245,8 +246,13 @@ class PivnetAPI::Client
   def request(request_class, uri, body, headers, options = {})
     uri, body, headers, options = @interceptors.reduce([uri, body, headers, DEFAULT_OPTIONS.merge(options)]) {|r, i| i.before_request(*r) }
 
-    response = Net::HTTP.start(uri.host, uri.port, proxy_addr, proxy_port, proxy_user, proxy_password, options, use_ssl: (uri.scheme == HTTPS)) do |http|
-      http.request request_class.new(uri, headers), body
+    begin
+      response = Net::HTTP.start(uri.host, uri.port, proxy_addr, proxy_port, proxy_user, proxy_password, options, use_ssl: (uri.scheme == HTTPS)) do |http|
+        http.request request_class.new(uri, headers), body
+      end
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
+           Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+      raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
     @observers.reduce(response) {|r, o| o.received_response(r) }
