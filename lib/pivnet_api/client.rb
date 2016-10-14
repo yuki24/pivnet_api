@@ -1,6 +1,6 @@
 # -*- frozen-string-literal: true -*-
 require 'net/http'
-require "#{__dir__}/pivnet_api/client/exceptions"
+require 'pivnet_api/client/exceptions'
 
 class PivnetAPI::Client
   attr_reader :domain, :proxy_addr, :proxy_port, :proxy_user, :proxy_password
