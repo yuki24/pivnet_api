@@ -6,8 +6,11 @@ class PivnetAPI::Client
   attr_reader :domain, :proxy_addr, :proxy_port, :proxy_user, :proxy_password
 
   def initialize(domain, proxy_addr: nil, proxy_port: nil, proxy_user: nil, proxy_password: nil)
-    @domain, @proxy_addr, @proxy_port, @proxy_user, @proxy_password =
-      domain, proxy_addr, proxy_port, proxy_user, proxy_password
+    @domain = domain
+    @proxy_addr = proxy_addr
+    @proxy_port = proxy_port
+    @proxy_user = proxy_user
+    @proxy_password = proxy_password
 
     @interceptors = [JsonCallback.new]
     @observers    = [ResponseHandler.new, JsonCallback.new]
@@ -22,12 +25,11 @@ class PivnetAPI::Client
   end
 
   def authentication(query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Get, uri("/api/v2/authentication", query_params), nil, headers, options)
+    request(Net::HTTP::Get, uri('/api/v2/authentication', query_params), nil, headers, options)
   end
-  
 
   def get_products(query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Get, uri("/api/v2/products", query_params), nil, headers, options)
+    request(Net::HTTP::Get, uri('/api/v2/products', query_params), nil, headers, options)
   end
   alias find_products get_products
 
@@ -39,10 +41,9 @@ class PivnetAPI::Client
   def sort_release_in_product(slug, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/release_sort_order", query_params), body, headers, options)
   end
-  
 
   def get_eulas(query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Get, uri("/api/v2/eulas", query_params), nil, headers, options)
+    request(Net::HTTP::Get, uri('/api/v2/eulas', query_params), nil, headers, options)
   end
   alias find_eulas get_eulas
 
@@ -54,10 +55,9 @@ class PivnetAPI::Client
   def accept_eula(slug, release_id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Post, uri("/api/v2/products/#{slug}/releases/#{release_id}/eula_acceptance", query_params), body, headers, options)
   end
-  
 
   def get_user_groups(query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Get, uri("/api/v2/user_groups", query_params), nil, headers, options)
+    request(Net::HTTP::Get, uri('/api/v2/user_groups', query_params), nil, headers, options)
   end
   alias find_user_groups get_user_groups
 
@@ -67,7 +67,7 @@ class PivnetAPI::Client
   alias find_user_group get_user_group
 
   def post_user_group(body, query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Post, uri("/api/v2/user_groups", query_params), body, headers, options)
+    request(Net::HTTP::Post, uri('/api/v2/user_groups', query_params), body, headers, options)
   end
   alias create_user_group post_user_group
 
@@ -84,12 +84,10 @@ class PivnetAPI::Client
   def add_member_to_group(id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/user_groups/#{id}/add_member", query_params), body, headers, options)
   end
-  
 
   def remove_member_from_group(id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/user_groups/#{id}/remove_member", query_params), body, headers, options)
   end
-  
 
   def get_product_files(slug, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/product_files", query_params), nil, headers, options)
@@ -116,10 +114,9 @@ class PivnetAPI::Client
   end
   alias destroy_product_file delete_product_file
 
-  def retry_file_transfer(slug, id, body, query_params: {}, headers: {}, **options)
+  def retry_file_transfer(slug, _id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/product_files/retry_all", query_params), body, headers, options)
   end
-  
 
   def post_download(slug, release_id, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Post, uri("/api/v2/products/#{slug}/releases/#{release_id}/product_files/#{id}/download", query_params), body, headers, options)
@@ -159,17 +156,14 @@ class PivnetAPI::Client
   def add_file_to_group(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/file_groups/#{id}/add_product_file", query_params), body, headers, options)
   end
-  
 
   def remove_file_from_group(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/file_groups/#{id}/remove_product_file", query_params), body, headers, options)
   end
-  
 
   def sort_file_in_group(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/file_groups/#{id}/product_file_sort_order", query_params), body, headers, options)
   end
-  
 
   def get_releases(slug, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases", query_params), nil, headers, options)
@@ -209,17 +203,14 @@ class PivnetAPI::Client
   def add_file_to_release(slug, release_id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{release_id}/add_product_file", query_params), body, headers, options)
   end
-  
 
   def remove_file_from_release(slug, release_id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{release_id}/remove_product_file", query_params), body, headers, options)
   end
-  
 
   def sort_file_in_release(slug, release_id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{release_id}/product_file_sort_order", query_params), body, headers, options)
   end
-  
 
   def get_release_file_groups(slug, id, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{id}/file_groups", query_params), nil, headers, options)
@@ -229,17 +220,14 @@ class PivnetAPI::Client
   def add_file_group_to_release(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/add_file_group", query_params), body, headers, options)
   end
-  
 
   def remove_file_group_from_release(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/remove_file_group", query_params), body, headers, options)
   end
-  
 
   def sort_file_group_in_release(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/file_group_sort_order", query_params), body, headers, options)
   end
-  
 
   def get_release_user_groups(slug, id, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{id}/user_groups", query_params), nil, headers, options)
@@ -249,12 +237,10 @@ class PivnetAPI::Client
   def add_user_group_to_release(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/add_user_group", query_params), body, headers, options)
   end
-  
 
   def remove_user_group_from_release(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/remove_user_group", query_params), body, headers, options)
   end
-  
 
   def get_release_dependencies(slug, id, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{id}/dependenciess", query_params), nil, headers, options)
@@ -264,12 +250,10 @@ class PivnetAPI::Client
   def add_dependency(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/add_dependency", query_params), body, headers, options)
   end
-  
 
   def remove_dependency(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/remove_dependency", query_params), body, headers, options)
   end
-  
 
   def get_release_upgrade_paths(slug, id, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{id}/upgrade_paths", query_params), nil, headers, options)
@@ -279,12 +263,10 @@ class PivnetAPI::Client
   def add_upgrade_path(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/add_upgrade_path", query_params), body, headers, options)
   end
-  
 
   def remove_upgrade_path(slug, id, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/remove_upgrade_path", query_params), body, headers, options)
   end
-  
 
   private
 
@@ -309,7 +291,7 @@ class PivnetAPI::Client
   HTTPS = 'https'.freeze
 
   def request(request_class, uri, body, headers, options = {})
-    uri, body, headers, options = @interceptors.reduce([uri, body, headers, DEFAULT_OPTIONS.merge(options)]) {|r, i| i.before_request(*r) }
+    uri, body, headers, options = @interceptors.reduce([uri, body, headers, DEFAULT_OPTIONS.merge(options)]) { |r, i| i.before_request(*r) }
 
     begin
       response = Net::HTTP.start(uri.host, uri.port, proxy_addr, proxy_port, proxy_user, proxy_password, options, use_ssl: (uri.scheme == HTTPS)) do |http|
@@ -320,12 +302,12 @@ class PivnetAPI::Client
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
-    @observers.reduce(response) {|r, o| o.received_response(r) }
+    @observers.reduce(response) { |r, o| o.received_response(r) }
   end
 
   def uri(path, query_params = {})
     uri = URI.join(domain, path)
-    uri.query = URI.encode_www_form(query_params) if !query_params.empty?
+    uri.query = URI.encode_www_form(query_params) unless query_params.empty?
     uri
   end
 
