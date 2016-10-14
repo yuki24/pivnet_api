@@ -36,7 +36,7 @@ class PivnetAPI::Client
   end
   alias find_product get_product
 
-  def sort_release_for_product(slug, body, query_params: {}, headers: {}, **options)
+  def sort_release_in_product(slug, body, query_params: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/release_sort_order", query_params), body, headers, options)
   end
   
@@ -161,8 +161,8 @@ class PivnetAPI::Client
   end
   
 
-  def remove_file_from_group(slug, id, query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Delete, uri("/api/v2/products/#{slug}/file_groups/#{id}/remove_product_file", query_params), nil, headers, options)
+  def remove_file_from_group(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/file_groups/#{id}/remove_product_file", query_params), body, headers, options)
   end
   
 
@@ -197,29 +197,94 @@ class PivnetAPI::Client
   alias destroy_release delete_release
 
   def get_release_files(slug, release_id, query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{release_id}/release_files", query_params), nil, headers, options)
+    request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{release_id}/product_files", query_params), nil, headers, options)
   end
   alias find_release_files get_release_files
 
   def get_release_file(slug, release_id, id, query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{release_id}/release_files/#{id}", query_params), nil, headers, options)
+    request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{release_id}/product_files/#{id}", query_params), nil, headers, options)
   end
   alias find_release_file get_release_file
 
-  def post_release_file(slug, release_id, body, query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Post, uri("/api/v2/products/#{slug}/releases/#{release_id}/release_files", query_params), body, headers, options)
+  def add_file_to_release(slug, release_id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{release_id}/add_product_file", query_params), body, headers, options)
   end
-  alias create_release_file post_release_file
+  
 
-  def patch_release_file(slug, release_id, id, body, query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{release_id}/release_files/#{id}", query_params), body, headers, options)
+  def remove_file_from_release(slug, release_id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{release_id}/remove_product_file", query_params), body, headers, options)
   end
-  alias update_release_file patch_release_file
+  
 
-  def delete_release_file(slug, release_id, id, query_params: {}, headers: {}, **options)
-    request(Net::HTTP::Delete, uri("/api/v2/products/#{slug}/releases/#{release_id}/release_files/#{id}", query_params), nil, headers, options)
+  def sort_file_in_release(slug, release_id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{release_id}/product_file_sort_order", query_params), body, headers, options)
   end
-  alias destroy_release_file delete_release_file
+  
+
+  def get_release_file_groups(slug, id, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{id}/file_groups", query_params), nil, headers, options)
+  end
+  alias find_release_file_groups get_release_file_groups
+
+  def add_file_group_to_release(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/add_file_group", query_params), body, headers, options)
+  end
+  
+
+  def remove_file_group_from_release(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/remove_file_group", query_params), body, headers, options)
+  end
+  
+
+  def sort_file_group_in_release(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/file_group_sort_order", query_params), body, headers, options)
+  end
+  
+
+  def get_release_user_groups(slug, id, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{id}/user_groups", query_params), nil, headers, options)
+  end
+  alias find_release_user_groups get_release_user_groups
+
+  def add_user_group_to_release(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/add_user_group", query_params), body, headers, options)
+  end
+  
+
+  def remove_user_group_from_release(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/remove_user_group", query_params), body, headers, options)
+  end
+  
+
+  def get_release_dependencies(slug, id, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{id}/dependenciess", query_params), nil, headers, options)
+  end
+  alias find_release_dependencies get_release_dependencies
+
+  def add_dependency(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/add_dependency", query_params), body, headers, options)
+  end
+  
+
+  def remove_dependency(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/remove_dependency", query_params), body, headers, options)
+  end
+  
+
+  def get_release_upgrade_paths(slug, id, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Get, uri("/api/v2/products/#{slug}/releases/#{id}/upgrade_paths", query_params), nil, headers, options)
+  end
+  alias find_release_upgrade_paths get_release_upgrade_paths
+
+  def add_upgrade_path(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/add_upgrade_path", query_params), body, headers, options)
+  end
+  
+
+  def remove_upgrade_path(slug, id, body, query_params: {}, headers: {}, **options)
+    request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/remove_upgrade_path", query_params), body, headers, options)
+  end
+  
 
   private
 
