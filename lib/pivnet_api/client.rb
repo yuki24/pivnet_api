@@ -325,7 +325,7 @@ class PivnetAPI::Client
     end
 
     def received_response(response)
-      JSON.load(response.body)
+      JSON.parse(response.body, object_class: OpenStruct) if response.body
     end
   end
 
