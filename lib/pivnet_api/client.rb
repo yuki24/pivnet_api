@@ -118,7 +118,7 @@ class PivnetAPI::Client
   end
   alias destroy_product_file delete_product_file
 
-  def retry_file_transfer(slug, _id, body, query: {}, headers: {}, **options)
+  def retry_file_transfer(slug, body, query: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/product_files/retry_all", query), body, headers, options)
   end
 
