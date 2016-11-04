@@ -1,10 +1,11 @@
 require "pivnet_api/version"
-require 'pivnet_api/client'
 
 module PivnetApi
   ENDPOINT = "https://network.pivotal.io"
 
   module V2
+    require 'pivnet_api/v2/client'
+
     def self.build(token, domain: ENDPOINT)
       client = PivnetApi::V2::Client.new(domain)
       client.register_interceptor(TokenProvider.new(token))
