@@ -1,4 +1,4 @@
-class PivnetAPI::Client
+class PivnetApi::V2::Client
   class APIError < StandardError; end
   class NetworkError < APIError; end
 
@@ -95,13 +95,13 @@ class PivnetAPI::Client
     '507' => InsufficientStorage,
     '508' => LoopDetected,
     '510' => NotExtended,
-    '511' => NetworkAuthenticationRequired,
+    '511' => NetworkAuthenticationRequired
   }.freeze
 
   class ResponseHandler
     def received_response(response)
       error = STATUS_TO_EXCEPTION_MAPPING[response.code]
-      raise error.new("Receieved an error response: #{response.code} #{response.code_type.to_s.gsub(/^Net::HTTP/, "")}", response) if error
+      raise error.new("Receieved an error response: #{response.code} #{error.to_s.split('::').last}", response) if error
       response
     end
   end

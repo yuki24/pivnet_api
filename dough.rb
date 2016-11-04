@@ -1,4 +1,4 @@
-Oven.bake :'PivnetAPI::Client', destination: 'lib/' do
+Oven.bake :'PivnetApi::V2::Client', destination: 'lib/' do
   format :json
 
   get :authentication, "/api/v2/authentication", as: :authentication

@@ -1,9 +1,9 @@
-# -*- frozen-string-literal: true -*-
+# frozen-string-literal: true
 require 'net/http'
-require 'pivnet_api/exceptions'
-require 'pivnet_api/json_handler'
+require 'pivnet_api/v2/exceptions'
+require 'pivnet_api/v2/json_handler'
 
-class PivnetAPI::Client
+class PivnetApi::V2::Client
   attr_reader :domain, :proxy_addr, :proxy_port, :proxy_user, :proxy_password
 
   def initialize(domain, proxy_addr: nil, proxy_port: nil, proxy_user: nil, proxy_password: nil)
@@ -301,8 +301,7 @@ class PivnetAPI::Client
       response = Net::HTTP.start(uri.host, uri.port, proxy_addr, proxy_port, proxy_user, proxy_password, options, use_ssl: (uri.scheme == HTTPS)) do |http|
         http.request request_class.new(uri, headers), body
       end
-    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError,
-           Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
+    rescue Timeout::Error, Errno::EINVAL, Errno::ECONNRESET, EOFError, Net::HTTPBadResponse, Net::HTTPHeaderSyntaxError, Net::ProtocolError => e
       raise NetworkError, "A network error occurred: #{e.class} (#{e.message})"
     end
 
