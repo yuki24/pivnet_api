@@ -5,7 +5,7 @@ require 'pivnet_api/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "pivnet_api"
-  spec.version       = PivnetAPI::VERSION
+  spec.version       = PivnetApi::VERSION
   spec.authors       = ["Yuki Nishijima"]
   spec.email         = ["mail@yukinishijima.net"]
 
