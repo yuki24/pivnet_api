@@ -3,10 +3,10 @@ Oven.bake :'PivnetApi::V2::Client', destination: 'lib/' do
 
   get :authentication, "/api/v2/authentication", as: :authentication
 
-  get :products, "/api/v2/products"
+  get :products, "/api/v2/products", response: ProductCollection
   get :product,  "/api/v2/products/:slug"
 
-  patch :release_order, "/api/v2/products/:slug/release_sort_order", as: :sort_release_in_product
+  patch :release_order, "/api/v2/products/:slug/release_sort_order", as: :sort_release_in_product, class: ReleaseSortOrderRequest
 
   get :eulas, "/api/v2/eulas"
   get :eula,  "/api/v2/eulas/:id"
