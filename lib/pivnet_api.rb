@@ -1,7 +1,7 @@
-require "pivnet_api/version"
+require 'pivnet_api/version'
 
 module PivnetApi
-  ENDPOINT = "https://network.pivotal.io"
+  ENDPOINT = 'https://network.pivotal.io'.freeze
 
   module V2
     require 'pivnet_api/v2/client'
@@ -18,7 +18,7 @@ module PivnetApi
       end
 
       def before_request(uri, body, headers, options)
-        headers["Authorization"] = "Token #{@token}"
+        headers['Authorization'] = "Token #{@token}"
 
         [uri, body, headers, options]
       end
