@@ -272,6 +272,11 @@ class PivnetApi::V2::Client
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/releases/#{id}/remove_upgrade_path", query), body, headers, options)
   end
 
+  def get_countries_states(query: {}, headers: {}, **options)
+    request(Net::HTTP::Get, uri('/api/v2/users/countries_states', query), nil, headers, options)
+  end
+  alias find_countries_states get_countries_states
+
   private
 
   DEFAULT_OPTIONS = {
