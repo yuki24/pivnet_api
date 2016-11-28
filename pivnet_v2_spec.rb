@@ -68,4 +68,6 @@ Oven.bake :'PivnetApi::V2::Client', destination: 'lib/' do
   get :release_upgrade_paths,     "/api/v2/products/:slug/releases/:id/upgrade_paths"
   patch :upgrade_path_assignment, "/api/v2/products/:slug/releases/:id/add_upgrade_path",    as: :add_upgrade_path
   patch :upgrade_path_assignment, "/api/v2/products/:slug/releases/:id/remove_upgrade_path", as: :remove_upgrade_path
+
+  get :countries_states, "/api/v2/users/countries_states"
 end
