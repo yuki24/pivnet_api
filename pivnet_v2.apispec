@@ -1,30 +1,30 @@
-Oven.bake :'PivnetApi::V2::Client', destination: 'lib/' do
+Oven.bake :'PivnetApi::V2::Client', object_mapping: 'resources.yaml', destination: 'lib/' do
   format :json
 
   get :authentication, "/api/v2/authentication", as: :authentication
 
-  get :products, "/api/v2/products", response: ProductCollection
-  get :product,  "/api/v2/products/:slug"
+  get :products, "/api/v2/products"#,       response: ProductCollection
+  get :product,  "/api/v2/products/:slug"#, response: Product
 
-  patch :release_order, "/api/v2/products/:slug/release_sort_order", as: :sort_release_in_product, class: ReleaseSortOrderRequest
+  patch :release_order, "/api/v2/products/:slug/release_sort_order"
 
-  get :eulas, "/api/v2/eulas"
-  get :eula,  "/api/v2/eulas/:id"
+  get :eulas, "/api/v2/eulas"#,     response: EulaCollection
+  get :eula,  "/api/v2/eulas/:id"#, response: Eula
 
-  post :eula_acceptance, "/api/v2/products/:slug/releases/:release_id/eula_acceptance", as: :accept_eula
+  post :eula_acceptance, "/api/v2/products/:slug/releases/:release_id/eula_acceptance", as: :accept_eula#, response: EulaAcceptance
 
-  get :user_groups,        "/api/v2/user_groups"
-  get :user_group,         "/api/v2/user_groups/:id"
-  post :user_group,        "/api/v2/user_groups"
-  patch :user_group,       "/api/v2/user_groups/:id"
+  get :user_groups,        "/api/v2/user_groups"#,     response: UserGroupCollection
+  get :user_group,         "/api/v2/user_groups/:id"#, response: UserGroup
+  post :user_group,        "/api/v2/user_groups"#,     response: UserGroup
+  patch :user_group,       "/api/v2/user_groups/:id"#, response: UserGroupResponse
   delete :user_group,      "/api/v2/user_groups/:id"
-  patch :group_membership, "/api/v2/user_groups/:id/add_member",    as: :add_member_to_group
-  patch :group_membership, "/api/v2/user_groups/:id/remove_member", as: :remove_member_from_group
+  patch :group_membership, "/api/v2/user_groups/:id/add_member",    as: :add_member_to_group#,      response: UserGroupResponse
+  patch :group_membership, "/api/v2/user_groups/:id/remove_member", as: :remove_member_from_group#, response: UserGroupResponse
 
-  get :product_files,   "/api/v2/products/:slug/product_files"
-  get :product_file,    "/api/v2/products/:slug/product_files/:id"
-  post :product_file,   "/api/v2/products/:slug/product_files"
-  patch :product_file,  "/api/v2/products/:slug/product_files/:id"
+  get :product_files,   "/api/v2/products/:slug/product_files"#,     response: ProductCollection
+  get :product_file,    "/api/v2/products/:slug/product_files/:id"#, response: ProductFileResponse
+  post :product_file,   "/api/v2/products/:slug/product_files"#,     response: ProductFileResponse
+  patch :product_file,  "/api/v2/products/:slug/product_files/:id"#, response: ProductFileResponse
   delete :product_file, "/api/v2/products/:slug/product_files/:id"
   patch :file_transfer, "/api/v2/products/:slug/product_files/retry_all", as: :retry_file_transfer
 

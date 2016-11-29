@@ -42,9 +42,10 @@ class PivnetApi::V2::Client
   end
   alias find_product get_product
 
-  def sort_release_in_product(slug, body, query: {}, headers: {}, **options)
+  def patch_release_order(slug, body, query: {}, headers: {}, **options)
     request(Net::HTTP::Patch, uri("/api/v2/products/#{slug}/release_sort_order", query), body, headers, options)
   end
+  alias update_release_order patch_release_order
 
   def get_eulas(query: {}, headers: {}, **options)
     request(Net::HTTP::Get, uri('/api/v2/eulas', query), nil, headers, options)

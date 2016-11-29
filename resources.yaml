@@ -1,0 +1,197 @@
+Links:
+  self: Hash
+  eula: Hash
+  self: Hash
+  releases: Hash
+  product_files: Hash
+  file_groups: Hash
+
+EulaAcceptance:
+  accepted_at: Date
+  _links: Links
+
+EulaCollection:
+  eulas: Array(Eula)
+  _links: Links
+
+Eula:
+  id: Integer
+  slug: String
+  content: String
+  name: String
+  _links: Links
+
+Country:
+  country: String
+  states: Array(String)
+
+UserGroupCollection:
+  user_groups: Array(UserGroup)
+  _links: Link
+
+UserGroup:
+  id: Integer
+  name: String
+  description: Stinrg
+  members: Array(String)
+  _links: Links
+
+UserGroupRequest:
+  user_group: UserGroup
+
+UserGroupResponse:
+  user_group: UserGroup
+
+MembershipRequest:
+  member: Member
+
+Member:
+  email: String
+  admin: Boolean
+
+ProductCollection:
+  products: Array(Product)
+  _links: Links
+
+Product:
+  id: Integer
+  slug: String
+  name: String
+  logo_url: String
+  availability: String
+  category: String
+  description: String
+  feature_list: Array(String)
+  docs_url: String
+  _links: Links
+
+ReleaseSortOrderRequest:
+  releases: IdList
+
+IdList:
+  ids: Array(Integer)
+
+ProdeuctFileCollection:
+  product_files: Array(ProductFile)
+  _links: Link
+
+ProductFileRequest:
+  product_file: ProductFile
+
+ProductFileResponse:
+  product_file: ProductFile
+
+ProductFile:
+  id: Integer
+  aws_object_key: String
+  description: String
+  docs_url: String
+  file_transfer_status: String
+  file_type: String
+  file_version: String
+  has_signature_file: Boolean
+  included_files: Array(String)
+  md5: String
+  name: String
+  platforms: String
+  ready_to_serve: Boolean
+  released_at: Date
+  size: Integer
+  system_requirements: Array(String)
+  _links: Links
+
+FileGroupCollection:
+  file_groups: Array(FileGroup)
+  _links: Links
+
+FileGroup:
+  id: Integer
+  name: String
+  product: Product
+  product_files: Array(ProductFile)
+  _links: Links
+
+FileGroupRequest:
+  file_group: FileGroup
+
+ProductFileRequest:
+  product_file: ProductFile
+
+ProductFileSortOrderRequest:
+  product_files: IdList
+
+ReleaseCollection:
+  releases: Array(Release)
+  _links: Link
+
+Release:
+  id: Integer
+  version: String
+  release_type: String
+  release_date: Date
+  release_notes_url: String
+  availability: String
+  description: String
+  eula: Eula
+  end_of_support_date: Date
+  end_of_guidance_date: Date
+  end_of_availability_date: Date
+  eccn: String
+  license_exception: String
+  controlled: Boolean
+  updated_at: DateTime
+  software_files_updated_at: DateTime
+  _links: Links
+
+ReleaseRequest:
+  release: Release
+
+ReleaseTypes:
+  status: Integer
+  release_types: Array(String)
+  _links: Links
+
+FileGroupSortOrderRequest:
+  ids: IdList
+
+UserGroupCollection:
+  user_groups: UserGroup
+  _links: Links
+
+UserGroupRequest:
+  user_group: UserGroup
+
+DependencyCollection:
+  dependencies: Array(Dependency)
+  _links: Links
+
+Dependency:
+  release: Release
+
+DependencyRequest:
+  dependency: Hash
+
+DependencySpecifierRequest:
+  dependency_specifier: Hash
+
+DependencySpecifierResponse:
+  dependency_specifier: DependencySpecifier
+
+DependencySpecifier:
+  id: Integer
+  product: Product
+  specifier: String
+  _links: Links
+
+DependencySpecifierCollection:
+  dependency_specifiers: Array(DependencySpecifier)
+
+UpgradePathCollection:
+  upgrade_paths: UpgradePath
+  _links: Links
+
+UpgradePath:
+  release: Release
+
+UpgradePathRequest:
+  upgrade_path: Hash
